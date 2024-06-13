@@ -3,9 +3,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseUrl } from "../../constants";
 
 
-export const moviesApi = createApi({
-  reducerPath: "moviesApi",
-  tagTypes: ["moviesTagType"],
+
+
+export const seatsApi = createApi({
+  reducerPath: "seatsApi",
+  tagTypes: ["seatsTagType"],
   baseQuery: fetchBaseQuery({
     baseUrl:`${baseUrl}/api`,
     prepareHeaders: (headers) => {
@@ -14,18 +16,18 @@ export const moviesApi = createApi({
   }),
   
   endpoints: (builder) => ({
-    getMovies: builder.query({
-      query: (id:number) => {
+    getRoomSeats: builder.query({
+      query: (roomId:number) => {
           return ({
             method: 'GET',
-            url:`/movies/${id}`   
+            url:`/seats/${roomId}`   
           })
       },
-      providesTags: ['moviesTagType'],
-    }),
+      providesTags: ['seatsTagType'],
+    })
   })
 });
 
 export const { 
-  useLazyGetMoviesQuery
-} = moviesApi;
+  useGetRoomSeatsQuery
+} = seatsApi;
