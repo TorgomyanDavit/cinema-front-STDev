@@ -1,21 +1,19 @@
 import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import Home from '../pages/home';
+import Rooms from '../pages/Rooms';
 import DefaultLayout from '../components/layouts/DefaultLayout';
 
 const configRoute = [
     {
-        element: <Home/>,
+        element: <Rooms/>,
         path: "/",
         Layout: DefaultLayout
     },
-
-
-    // {
-    //     element: <Rooms/>,
-    //     path: "/room/:id",
-    //     Layout: DefaultLayout
-    // },
+    {
+        element: <Rooms/>,
+        path: "/room/:id",
+        Layout: DefaultLayout
+    },
 ]
 
 const RoutesProvider: React.FC = () => {

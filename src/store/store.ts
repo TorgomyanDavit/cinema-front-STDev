@@ -3,6 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 
 import CinemaSliceReducer from "./slices/cinema/cinemaSlice";
 import { roomApi } from '../services/room/roomApi';
+import { moviesApi } from '../services/movies/moviesApi';
 
 
 export const store:any = configureStore({
@@ -10,6 +11,7 @@ export const store:any = configureStore({
     cinemaSlice:CinemaSliceReducer,
 
     [roomApi.reducerPath]: roomApi.reducer,
+    [moviesApi.reducerPath]: roomApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
