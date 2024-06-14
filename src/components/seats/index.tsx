@@ -1,19 +1,26 @@
 import { useGetRoomSeatsQuery } from "../../services/seats/seatsApi";
+import { useAppSelector } from "../../store/hooks";
+import { selectSeats } from "../../store/slices/cinema/selector";
 import "./seats.scss";
 
 interface MovieListProps {
-  moviesName: string;
-  roomId:number
+    roomsName: string;
+    roomId:number;
+    movieName:string
 }
 
-function Seats({ moviesName, roomId }: MovieListProps) {
-    const { data: seatsData, isLoading } = useGetRoomSeatsQuery(roomId);
+function Seats({ roomsName, roomId, movieName }: MovieListProps) {
+    useGetRoomSeatsQuery(roomId);
+    const seats = useAppSelector(selectSeats);
 
-    console.log(seatsData?.data)
-    if(isLoading) return null;
+
+    console.log(seats,"seats")
+    if(seats) return null;
     return (
         <div className="movies_list">
-            <h2>Movies in {moviesName}</h2>
+            <h2>Movie in {roomsName}</h2>
+            <h3>{movieName}</h3>
+
         </div>
     );
 }
