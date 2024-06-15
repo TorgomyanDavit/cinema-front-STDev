@@ -17,17 +17,28 @@ export const seatsApi = createApi({
   
   endpoints: (builder) => ({
     getRoomSeats: builder.query({
-      query: (roomId:number) => {
+      query: ({RoomID,show_datetime}) => {
           return ({
             method: 'GET',
-            url:`/seats/${roomId}`   
+            url:`/seats/${RoomID}/${show_datetime}`   
           })
       },
       providesTags: ['seatsTagType'],
+    }),
+    bookMovie: builder.mutation({
+      query: (selectedSeat) => {
+        return {
+          method: 'POST',
+          url: '/seats',
+          body: selectedSeat,
+        }
+      },
+      invalidatesTags: ['seatsTagType']
     })
   })
 });
 
 export const { 
-  useGetRoomSeatsQuery
+  useGetRoomSeatsQuery,
+  useBookMovieMutation
 } = seatsApi;

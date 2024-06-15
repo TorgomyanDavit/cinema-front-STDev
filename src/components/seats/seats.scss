@@ -1,0 +1,56 @@
+.seats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .seats_list {
+        display: grid;
+        grid-template-columns: repeat(10, 40px); // 10 columns
+        grid-template-rows: repeat(8, 40px); // 8 rows
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+        .seat {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgb(0, 0, 0);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            
+            &:disabled {
+                background-color: red;
+                cursor: not-allowed;
+            }
+    
+            &:hover {
+                background: rgb(9, 255, 0); 
+                color: black;
+            }
+        }
+    
+        .selected {
+            background: rgb(9, 255, 0);
+            color: black;
+        }
+    
+    
+    }
+
+    .book_button {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px 20px;
+        margin: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        background: black;
+        color: white;
+        margin: 30px auto 0;
+    }
+}
