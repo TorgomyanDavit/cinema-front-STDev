@@ -16,10 +16,10 @@ export const moviesApi = createApi({
   endpoints: (builder) => ({
     getMovies: builder.query({
       query: (id:number) => {
-          return ({
-            method: 'GET',
-            url:`/movies/${id}`   
-          })
+        return ({
+          method: 'GET',
+          url:`/movies/${id}`   
+        })
       },
       providesTags: ['moviesTagType'],
     }),
@@ -33,10 +33,34 @@ export const moviesApi = createApi({
       },
       invalidatesTags: ["moviesTagType"],
     }),
+
+    editeMovie: builder.mutation({
+      query: (formData) => {
+        return {
+          method: 'POST',
+          url:'/movies',
+          body:formData
+        }
+      },
+      invalidatesTags: ['moviesTagType']
+    }),
+
+    createMovie: builder.mutation({
+      query: (formData) => {
+        return {
+          method: 'PUT',
+          url:'/movies',
+          body:formData
+        }
+      },
+      invalidatesTags: ['moviesTagType']
+    })
   })
 });
 
 export const { 
   useLazyGetMoviesQuery,
-  useDeleteMovieMutation
+  useDeleteMovieMutation,
+  useCreateMovieMutation,
+  useEditeMovieMutation
 } = moviesApi;

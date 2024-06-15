@@ -1,0 +1,114 @@
+.photoDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  height: 485px;
+  .title_photo {
+    font-size: 16px;
+    color: black;
+    text-align: left;
+    width: 100%;
+    font-weight: bold;
+    .asterick {
+      color: red;
+    }
+  }
+
+  .file_Parent {
+    width: fit-content;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    
+    .fileName {
+      margin-bottom: 10px;
+      font-size: 20px;
+      letter-spacing: 1px;
+      font-weight: 100;
+    }
+
+    .custom-file-upload {
+      display: inline-block;
+      padding: 10px 20px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 1px darkblue dashed;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      .file-input {
+        display: none;
+      }
+    }
+
+    .custom-file-upload:hover {
+      background-color: #c3d6fb75;
+    }
+
+    .sc-beySbM {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .sc-dmyDGi {
+        display: none;
+      }
+    }
+
+    .ejhWCc {
+      width: 100%;
+      height: 100%;
+      max-width: unset;
+      min-width: unset !important;
+    }
+
+    .errorsClass {
+      border: 1px dashed red;
+    }
+
+    .image {
+      // position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      z-index: 1;
+      pointer-events: none;
+    }
+  }
+
+  .img_container {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+  }
+} 
+
+.photo_logo {
+  width: 200px !important;
+  height: 200px !important;
+}
+
+.del_border {
+  .custom-file-upload  {
+    border: none !important;
+  }
+}
+
+.photo_homeSlider {
+  width: 400px !important;
+  height: 200px !important;
+  .ejhWCc {
+    border-radius: 25% !important;
+  }
+}

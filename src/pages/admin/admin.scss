@@ -34,9 +34,24 @@
   }
 
   .movies_list {
-    > h2 {
+    gap: 20px !important;
+    .add_movies {
       width: 100%;
+      .button {
+        align-self: flex-end;
+        background: linear-gradient(#e66465, #9198e5);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        cursor: pointer;
+        height: 40px;
+        outline: none;
+        padding: 10px 25px;
+        text-decoration: none;
+        margin: 0 auto;
+      }
     }
+    > h2 { width: 100% }
     display: flex;
     gap: 50px;
     flex-wrap: wrap;

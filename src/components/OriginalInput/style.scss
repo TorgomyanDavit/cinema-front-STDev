@@ -1,0 +1,29 @@
+.multipleLanguage {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  .MuiTextarea-colorDanger {
+    border-color: unset;
+  }
+
+  .title {
+    display: flex;
+    margin: 10px 0 5px;
+    justify-content: space-between;
+    .togle_lang {
+      button {
+        border-color: rgb(255, 255, 255);
+        height: fit-content;
+        padding: 0 10px;
+      }
+    }
+  }
+
+  .manuLAbel {
+    margin: 5px 0;
+  }
+
+  #asterick {
+    color: red;
+  }
+}

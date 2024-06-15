@@ -8,6 +8,7 @@ import ResponsiveDialog from "../dialog";
 import { useDeleteMovieMutation } from "../../services/movies/moviesApi";
 import { useState } from "react";
 import AlertResponseDialog from "../SuccessPopUp";
+import CreateMovie from "../createMovie";
 
 
 export interface Movie {
@@ -21,31 +22,41 @@ export interface Movie {
 
 interface MovieListProps {
   movies: Movie[];
-  roomName: string;
-  chooseMovieSeats: (id: number) => any;
+  nameAndId: {roomName:string,RoomID:number};
 }
 
-function AdminMovieList({ movies, roomName, chooseMovieSeats }: MovieListProps) {
+function AdminMovieList({ movies, nameAndId }: MovieListProps) {
+  const {roomName,RoomID} = nameAndId
   const [{success},SetSuccessCode] = useState({success:""})
+  const [movieId,SetMovieId] = useState<number>(NaN)
 
   const [deleteMovie] = useDeleteMovieMutation()
   const handleDeleteItem = async (mofifierid:Number) =>{
-      await deleteMovie(mofifierid).unwrap().then((resp) => {
-        debugger
-        SetSuccessCode({success:resp.message})
-      })
+    await deleteMovie(mofifierid).unwrap().then((resp) => {
+      SetSuccessCode({success:resp.message})
+    })
   };
+
+  
+
+  const getCurrentMovie = (id: number) => {
+    const movie = movies?.find((movie: Movie) => movie.id === id);
+    return movie
+  };
+
+  // console.log(roomsData, "roomsData");
+  // console.log(movies, "movies");
 
   return (
     <div className="movies_list">
       <h2>Change or add movies in {roomName}</h2>
-      <button className="LinkTo_anotherPage" onClick={() => SetOpenCreeatePopUp(true)}>+ Ավելացնել</button>
-      {/* <button className="LinkTo_anotherPage" onClick={() => SetOpenCreeatePopUp(true)}>+ Ավելացնել</button> */}
-      
+      <div className="add_movies">
+        <button onClick={() => SetMovieId(0.1)} className="button">+ Ավելացնել</button>
+      </div>
+
       {movies.map(({ id, title, poster_url, show_datetime, duration, Available }) => {
-        console.log(show_datetime,"show_datetime")
           return (
-            <div key={id} className="movie_item" onClick={() => chooseMovieSeats(id)}>
+            <div key={id} className="movie_item">
               <h3>{title}</h3>
               <img src={poster_url} alt={title} className="movie_poster" />
               <p className="showtime">
@@ -56,8 +67,7 @@ function AdminMovieList({ movies, roomName, chooseMovieSeats }: MovieListProps) 
               </p>
               <div className="cardHeaderMode">
                 <Tooltip title="Change">
-                  {/* <IconButton onClick={() => {setAlbomId(id)}}>  */}
-                  <IconButton> 
+                  <IconButton onClick={() => {SetMovieId(id);}}> 
                     <ModeEditOutlineIcon/> 
                   </IconButton>
                 </Tooltip>
@@ -68,7 +78,6 @@ function AdminMovieList({ movies, roomName, chooseMovieSeats }: MovieListProps) 
                 />
               </div>
 
-
               {!Available && <div className="shadow_disabled">Movie Expaird</div>}  
             </div>
           )
@@ -78,6 +87,16 @@ function AdminMovieList({ movies, roomName, chooseMovieSeats }: MovieListProps) 
         successMessage={success} 
         CloseConfirmMessage={SetSuccessCode}
       />}
+
+
+      {!!movieId &&
+      <CreateMovie  
+        RoomID={RoomID}
+        SetMessage={SetSuccessCode}
+        NewData={getCurrentMovie(movieId)}
+        onClose={() => {SetMovieId(NaN)}}
+      />}
+
     </div>
   );
 }
