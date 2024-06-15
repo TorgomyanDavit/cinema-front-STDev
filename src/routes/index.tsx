@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Rooms from '../pages/Rooms';
 import DefaultLayout from '../components/layouts/DefaultLayout';
+import CinemaAdmin from '../pages/admin';
 
 const configRoute = [
     {
@@ -10,8 +11,8 @@ const configRoute = [
         Layout: DefaultLayout
     },
     {
-        element: <Rooms/>,
-        path: "/room/:id",
+        element: <CinemaAdmin/>,
+        path: "/admin",
         Layout: DefaultLayout
     },
 ]

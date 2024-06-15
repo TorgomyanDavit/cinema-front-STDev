@@ -1,16 +1,10 @@
-.rooms_page {
+.admin_rooms_page {
   padding: 20px;
 
   .title {
     text-align: center;
     font-size: 2em;
     margin-bottom: 20px;
-  }
-
-  .admin_Link {
-    font-size: 30px;
-    color: black;
-    font-weight: bold;
   }
 
   .rooms_list {
@@ -39,4 +33,16 @@
     }
   }
 
+  .movies_list {
+    > h2 {
+      width: 100%;
+    }
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+    .movie_item {
+      cursor: default;
+    }
+  }
+  
 }

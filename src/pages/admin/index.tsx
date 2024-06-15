@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom";
-import MovieList, { Movie } from "../../components/movieLists";
-import Seats from "../../components/seats";
+// import MovieList, { Movie } from "../../components/movieLists";
+import { Movie } from "../../components/movieLists";
+import AdminMovieList from "../../components/movieLists/adminMovieList";
 import { useLazyGetMoviesQuery } from "../../services/movies/moviesApi";
 import { useGetCinemaRoomsQuery } from "../../services/room/roomApi";
-import "./rooms.scss";
+import "./admin.scss";
 import { useState } from "react";
 
 interface Room {
@@ -11,7 +11,7 @@ interface Room {
   name: string;
 }
 
-function Rooms() {
+function CinemaAdmin() {
   const { data: roomsData, isLoading } = useGetCinemaRoomsQuery(null);
   const [getMoviesRoom, { data: movies }] = useLazyGetMoviesQuery();
   const [selectedRoomId, setSelectedRoom] = useState<number>(NaN);
@@ -35,19 +35,21 @@ function Rooms() {
     return roomsData?.data.find((room:Movie) => room.id === id)?.name
   };
 
-  const getMovieNameAndTime = (id: number) => {
-    const movie = movies?.data.find((movie: Movie) => movie.id === id);
-    return {
-      title:movie.title,
-      show_datetime:movie.show_datetime
-    }
-  };
+//   const getMovieNameAndTime = (id: number) => {
+//     const movie = movies?.data.find((movie: Movie) => movie.id === id);
+//     return {
+//       title:movie.title,
+//       show_datetime:movie.show_datetime
+//     }
+//   };
+
+  // console.log(roomsData, "roomsData");
+  // console.log(movies, "movies");
 
   if (isLoading) return <h1>Loading ...</h1>;
   return (
-    <div className="rooms_page">
-      <NavLink to={"admin"} className="admin_Link">Admin</NavLink>
-      <h1 className="title">Cinema Rooms</h1>
+    <div className="admin_rooms_page">
+      <h1 className="title">Admin panel for manage rooms and movies</h1>
       <div className="rooms_list">
         {roomsData?.data.map(({ id, name }: Room) => (
           <button
@@ -59,24 +61,17 @@ function Rooms() {
           </button>
         ))}
       </div>
-      
-      {movies && !MovieID && <MovieList 
+
+      {movies && <AdminMovieList
         chooseMovieSeats={ChooseMovieId} 
         movies={movies?.data} 
         roomName={getRoomName(selectedRoomId)}
       />}
 
-      {!!MovieID && 
-        <Seats 
-          MovieID={MovieID}
-          movieNameAndDate={getMovieNameAndTime(MovieID)}
-          RoomID={selectedRoomId}
-          roomsName={getRoomName(selectedRoomId)}
-        />
-      }
+
 
     </div>
   );
 }
 
-export default Rooms;
+export default CinemaAdmin;

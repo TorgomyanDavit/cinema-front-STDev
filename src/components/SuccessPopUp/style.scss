@@ -1,0 +1,10 @@
+#successPopUp {
+    position: fixed;
+    left: 50px;
+    bottom: 50px;
+    width: 350px;
+    .css-wnkddu-MuiPaper-root-MuiAlert-root {
+        background: rgb(190, 240 ,190) !important;
+        transition: 5s;
+    }
+}

@@ -23,9 +23,20 @@ export const moviesApi = createApi({
       },
       providesTags: ['moviesTagType'],
     }),
+    
+    deleteMovie: builder.mutation({
+      query: (id:Number) => {
+        return {
+          method:"DELETE",
+          url: `/movies/${id}`,
+        }
+      },
+      invalidatesTags: ["moviesTagType"],
+    }),
   })
 });
 
 export const { 
-  useLazyGetMoviesQuery
+  useLazyGetMoviesQuery,
+  useDeleteMovieMutation
 } = moviesApi;
