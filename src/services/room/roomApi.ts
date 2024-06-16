@@ -24,10 +24,20 @@ export const roomApi = createApi({
           })
       },
       providesTags: ['roomTagType'],
-    })
+    }),
+    deleteRoom: builder.mutation({
+      query: (id:Number) => {
+        return {
+          method:"DELETE",
+          url: `/rooms/${id}`,
+        }
+      },
+      invalidatesTags: ["roomTagType"],
+    }),
   })
 });
 
 export const { 
-  useGetCinemaRoomsQuery
+  useGetCinemaRoomsQuery,
+  useDeleteRoomMutation
 } = roomApi;

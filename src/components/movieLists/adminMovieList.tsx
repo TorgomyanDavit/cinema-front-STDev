@@ -37,21 +37,16 @@ function AdminMovieList({ movies, nameAndId }: MovieListProps) {
     })
   };
 
-  
-
   const getCurrentMovie = (id: number) => {
     const movie = movies?.find((movie: Movie) => movie.id === id);
     return movie
   };
 
-  // console.log(roomsData, "roomsData");
-  // console.log(movies, "movies");
-
   return (
     <div className="movies_list">
       <h2>Change or add movies in {roomName}</h2>
-      <div className="add_movies">
-        <button onClick={() => SetMovieId(0.1)} className="button">+ Ավելացնել</button>
+      <div className="add_movies_and_rooms">
+        <button onClick={() => SetMovieId(Infinity)} className="button">+ Add movies</button>
       </div>
 
       {movies.map(({ id, title, poster_url, show_datetime, duration, Available }) => {
@@ -83,18 +78,18 @@ function AdminMovieList({ movies, nameAndId }: MovieListProps) {
           )
       })}
 
-      {!!success && <AlertResponseDialog
-        successMessage={success} 
-        CloseConfirmMessage={SetSuccessCode}
-      />}
-
-
       {!!movieId &&
       <CreateMovie  
         RoomID={RoomID}
         SetMessage={SetSuccessCode}
         NewData={getCurrentMovie(movieId)}
         onClose={() => {SetMovieId(NaN)}}
+      />}
+
+      
+      {!!success && <AlertResponseDialog
+        successMessage={success} 
+        CloseConfirmMessage={SetSuccessCode}
       />}
 
     </div>

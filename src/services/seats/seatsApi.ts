@@ -25,11 +25,12 @@ export const seatsApi = createApi({
       },
       providesTags: ['seatsTagType'],
     }),
+    
     bookMovie: builder.mutation({
       query: (selectedSeat) => {
         return {
           method: 'POST',
-          url: '/seats',
+          url: '/booking',
           body: selectedSeat,
         }
       },

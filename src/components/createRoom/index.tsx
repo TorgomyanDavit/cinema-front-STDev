@@ -5,7 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import "./style.scss";
 import ClickToOutsideClose from '../closePopUp';
 import { useCreateMovieMutation, useEditeMovieMutation } from '../../services/movies/moviesApi';
 import Input from '../OriginalInput';
@@ -13,6 +12,8 @@ import PhotoUploader from '../PhotoUpload';
 import BasicDatePicker from '../dataPicker/dataTime';
 import dayjs from 'dayjs';
 import BasicTimePicker from '../dataPicker/timer';
+import "./style.scss";
+
 
 
 export const createPostScheme = yup.object().shape({
@@ -21,15 +22,13 @@ export const createPostScheme = yup.object().shape({
     // playlistImg:yup.string().required(),
 });
 
-export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
+export default function CreateRoom({onClose,NewData,SetMessage,RoomID}:any) {
 
     const { register,handleSubmit, setValue, formState: { errors } } = useForm<any>({
         resolver:yupResolver(createPostScheme)
     });
 
     const formData = new FormData();
-    const [imgError,SetImgError] = useState<any>(false)
-    const [ImgFile,SetPostsImg] = useState<any>(false);
     
     const [createMovie,{isLoading:loadingCreate}] = useCreateMovieMutation()
     const [editeMovie,{isLoading:loadingEdit}] = useEditeMovieMutation()
@@ -37,32 +36,23 @@ export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
 
     const onSubmit: SubmitHandler<any> = async (data:any) => {
         debugger
-        const {title,show_datetime,duration} = data
+        const { title } = data
         formData.append("title", title);
-        formData.append("show_datetime", show_datetime);
-        formData.append("duration", duration);
 
         if(NewData) {
             formData.append("id", NewData?.id);
-            if(!!ImgFile) { 
-                formData.append('photo', ImgFile);
-            } 
 
             await editeMovie(formData).unwrap().then((resp:any) => {
                 if(resp.success) { SetMessage({success:resp.message}); onClose()} 
                 else {  SetMessage({success:resp.message})  }
             })
         } else {
-            if(!!ImgFile) { 
-                formData.append('photo', ImgFile);
                 formData.append("id", RoomID || "");
                 await createMovie(formData).unwrap().then((resp:any) => {
                     if(resp.success) { SetMessage({success:resp.message}); onClose()} 
                     else {  SetMessage({success:resp.message})  }
                 })
-            } else { 
-                SetImgError(true) 
-            }
+           
         }
     }
 
@@ -97,31 +87,6 @@ export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
                                 modifierName={"Movie name"}
                             />
                         </div>
-                        <BasicDatePicker
-                            value={dayjs()} 
-                            onChange={(newValue) => {
-                                setValue('show_datetime',  dayjs(newValue)?.format('YYYY-MM-DD HH:mm'))
-                            }} 
-                            register={register} 
-                            registerName="show_datetime"
-                        />
-
-                        <BasicTimePicker
-                            value={dayjs()} 
-                            onChange={(newValue) => {
-                                setValue('duration', dayjs(newValue)?.format('HH:mm:ss'))
-                            }} 
-                            register={register} 
-                            registerName="duration"
-                        />
-                        
-                        <PhotoUploader
-                            image={NewData ? NewData?.poster_url : ''}
-                            name={"Main imges"} 
-                            errors={(!ImgFile && imgError)}
-                            choseImgData={({file}:any) => {SetPostsImg(file)}}
-                            className={"photo_homeSlider"}
-                        />
                     </div>
                     <div className='Button_group'>
                         <Button sx={{width:"300px",textAlign:"right"}} type='submit' variant="outlined" onClick={onClose}>Close</Button>
