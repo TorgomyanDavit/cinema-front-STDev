@@ -29,7 +29,7 @@ function MovieList({ movies, roomName, chooseMovieSeats }: MovieListProps) {
                 Showtime: {dayjs(show_datetime).format('MMMM Do YYYY, HH:mm')}
               </p>
               <p className="duration">
-                Duration: {duration}
+                Duration:{duration}
               </p>
             </div>
           )
