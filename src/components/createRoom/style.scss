@@ -4,6 +4,7 @@
     @include CreatePopUpStyle();
     .centerPopUp {
         width: 100%;
+        height: fit-content;
         overflow: auto !important;
         .popUptopSide {
             flex-direction: column;

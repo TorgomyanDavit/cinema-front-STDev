@@ -1,5 +1,4 @@
 import "./movieList.scss";
-import moment from 'moment'; 
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
@@ -9,7 +8,7 @@ import { useDeleteMovieMutation } from "../../services/movies/moviesApi";
 import { useState } from "react";
 import AlertResponseDialog from "../SuccessPopUp";
 import CreateMovie from "../createMovie";
-
+import dayjs from "dayjs";
 
 export interface Movie {
   id: number;
@@ -22,7 +21,7 @@ export interface Movie {
 
 interface MovieListProps {
   movies: Movie[];
-  nameAndId: {roomName:string,RoomID:number};
+  nameAndId: {roomName?:string,RoomID?:number};
 }
 
 function AdminMovieList({ movies, nameAndId }: MovieListProps) {
@@ -50,12 +49,13 @@ function AdminMovieList({ movies, nameAndId }: MovieListProps) {
       </div>
 
       {movies.map(({ id, title, poster_url, show_datetime, duration, Available }) => {
+        console.log(show_datetime,"show_datetime")
           return (
             <div key={id} className="movie_item">
               <h3>{title}</h3>
               <img src={poster_url} alt={title} className="movie_poster" />
               <p className="showtime">
-                Showtime: {moment(show_datetime).format('MMMM Do YYYY, h:mm A')}
+                Showtime: {dayjs(show_datetime).format('MMMM Do YYYY, HH:mm')}
               </p>
               <p className="duration">
                 Duration: {duration}

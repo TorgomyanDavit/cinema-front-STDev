@@ -1,5 +1,5 @@
+import dayjs from "dayjs";
 import "./movieList.scss";
-import moment from 'moment'; 
 export interface Movie {
   id: number;
   title: string;
@@ -26,7 +26,7 @@ function MovieList({ movies, roomName, chooseMovieSeats }: MovieListProps) {
               <h3>{title}</h3>
               <img src={poster_url} alt={title} className="movie_poster" />
               <p className="showtime">
-                Showtime: {moment(show_datetime).format('LT')}
+                Showtime: {dayjs(show_datetime).format('MMMM Do YYYY, HH:mm')}
               </p>
               <p className="duration">
                 Duration: {duration}

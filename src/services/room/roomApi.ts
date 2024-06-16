@@ -25,6 +25,7 @@ export const roomApi = createApi({
       },
       providesTags: ['roomTagType'],
     }),
+
     deleteRoom: builder.mutation({
       query: (id:Number) => {
         return {
@@ -34,10 +35,34 @@ export const roomApi = createApi({
       },
       invalidatesTags: ["roomTagType"],
     }),
+
+    editeRoom: builder.mutation({
+      query: (formData) => {
+        return {
+          method: 'POST',
+          url:'/rooms',
+          body:formData
+        }
+      },
+      invalidatesTags: ['roomTagType']
+    }),
+
+    createRoom: builder.mutation({
+      query: (formData) => {
+        return {
+          method: 'PUT',
+          url:'/rooms',
+          body:formData
+        }
+      },
+      invalidatesTags: ['roomTagType']
+    })
   })
 });
 
 export const { 
   useGetCinemaRoomsQuery,
-  useDeleteRoomMutation
+  useDeleteRoomMutation,
+  useCreateRoomMutation,
+  useEditeRoomMutation
 } = roomApi;

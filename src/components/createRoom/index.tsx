@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,23 +6,18 @@ import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import ClickToOutsideClose from '../closePopUp';
-import { useCreateMovieMutation, useEditeMovieMutation } from '../../services/movies/moviesApi';
 import Input from '../OriginalInput';
-import PhotoUploader from '../PhotoUpload';
-import BasicDatePicker from '../dataPicker/dataTime';
-import dayjs from 'dayjs';
-import BasicTimePicker from '../dataPicker/timer';
 import "./style.scss";
+import { isEmpty } from '../../utils';
+import { useCreateRoomMutation, useEditeRoomMutation } from '../../services/room/roomApi';
 
 
 
 export const createPostScheme = yup.object().shape({
     title:yup.string().min(2).required(),
-    show_datetime:yup.string().min(2).required()
-    // playlistImg:yup.string().required(),
 });
 
-export default function CreateRoom({onClose,NewData,SetMessage,RoomID}:any) {
+export default function CreateRoom({onClose,NewData,SetMessage}:any) {
 
     const { register,handleSubmit, setValue, formState: { errors } } = useForm<any>({
         resolver:yupResolver(createPostScheme)
@@ -30,29 +25,24 @@ export default function CreateRoom({onClose,NewData,SetMessage,RoomID}:any) {
 
     const formData = new FormData();
     
-    const [createMovie,{isLoading:loadingCreate}] = useCreateMovieMutation()
-    const [editeMovie,{isLoading:loadingEdit}] = useEditeMovieMutation()
-
+    const [createRoom,{isLoading:loadingCreate}] = useCreateRoomMutation()
+    const [editeRoom,{isLoading:loadingEdit}] = useEditeRoomMutation()
 
     const onSubmit: SubmitHandler<any> = async (data:any) => {
-        debugger
         const { title } = data
         formData.append("title", title);
 
-        if(NewData) {
-            formData.append("id", NewData?.id);
-
-            await editeMovie(formData).unwrap().then((resp:any) => {
+        if(!isEmpty(NewData)) {
+            formData.append("id", NewData?.RoomID);
+            await editeRoom(formData).unwrap().then((resp:any) => {
                 if(resp.success) { SetMessage({success:resp.message}); onClose()} 
                 else {  SetMessage({success:resp.message})  }
             })
         } else {
-                formData.append("id", RoomID || "");
-                await createMovie(formData).unwrap().then((resp:any) => {
-                    if(resp.success) { SetMessage({success:resp.message}); onClose()} 
-                    else {  SetMessage({success:resp.message})  }
-                })
-           
+            await createRoom(formData).unwrap().then((resp:any) => {
+                if(resp.success) { SetMessage({success:resp.message}); onClose()} 
+                else {  SetMessage({success:resp.message})  }
+            })
         }
     }
 
@@ -61,13 +51,10 @@ export default function CreateRoom({onClose,NewData,SetMessage,RoomID}:any) {
     }
 
     useEffect(() => {
-        if(NewData) {
-          setValue("title",NewData?.title);
-          setValue("show_datetime",NewData?.show_datetime);
-          setValue("duration",NewData?.duration);
+        if(!isEmpty(NewData)) {
+          setValue("title",NewData?.roomName);
         } 
     },[NewData])
-
 
     console.log(NewData,"NewData");
     return (
@@ -79,12 +66,12 @@ export default function CreateRoom({onClose,NewData,SetMessage,RoomID}:any) {
                             <Input
                                 register={register}
                                 registerName={"title"}
-                                name={"Movie name"}  
-                                placeholder={"Write movie name"}
+                                name={"Room name"}  
+                                placeholder={"Write room name"}
                                 errors={errors}
                                 minRow={1.2}
                                 size="lg"
-                                modifierName={"Movie name"}
+                                modifierName={"Room name"}
                             />
                         </div>
                     </div>
@@ -92,7 +79,7 @@ export default function CreateRoom({onClose,NewData,SetMessage,RoomID}:any) {
                         <Button sx={{width:"300px",textAlign:"right"}} type='submit' variant="outlined" onClick={onClose}>Close</Button>
                         <Button sx={{width:"300px",textAlign:"right"}} type='submit' variant="contained" endIcon={
                             loadingEdit || loadingCreate ? <CircularProgress size={18} style={{ color: 'black' }}/> : <SendIcon />
-                        }>{NewData ? "Change" : "Add"} </Button>
+                        }>{!isEmpty(NewData) ? "Change room" : "Add room"} </Button>
                     </div>
                 </div>
             </ClickToOutsideClose>

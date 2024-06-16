@@ -11,7 +11,11 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-
+    .cardHeaderMode {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 5px;
+    }
     .room_link {
       display: flex;
       align-items: center;
@@ -24,7 +28,9 @@
       margin: 10px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.3s;
-      .ResponsiveDialog {
+      .cardHeaderMode {
+        display: flex;
+        gap: 3px;
         button {
           padding: 0 !important;
           min-width: fit-content !important;

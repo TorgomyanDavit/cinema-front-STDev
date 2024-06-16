@@ -9,6 +9,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import "./admin.scss";
 import AlertResponseDialog from "../../components/SuccessPopUp";
 import CreateRoom from "../../components/createRoom";
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+
 
 interface Room {
   id: number;
@@ -40,10 +44,14 @@ function CinemaAdmin() {
 
   const getRoomNameAndId = (id: number) => {
     const data = roomsData?.data.find((room:Movie) => room.id === id)
-    return {
-      roomName:data?.name,
-      RoomID:data?.id
+    if(data) {
+      return {
+        roomName:data?.name,
+        RoomID:data?.id
+      }
     }
+
+    return {}
   };
 
   if (isLoading) return <h1>Loading ...</h1>;
@@ -55,18 +63,26 @@ function CinemaAdmin() {
       </div>
       <div className="rooms_list">
         {roomsData?.data.map(({ id, name }: Room) => (
-          <button
+          <div
+            role="button"
             key={id}
             className={`room_link ${getSelectedRoom(id)}`}
             onClick={() => handleClick(id)}
           >
             {name}
-            <ResponsiveDialog
+            <div className="cardHeaderMode">
+              <Tooltip title="Change">
+                <IconButton onClick={() => {SetRoomID(id);}}> 
+                  <ModeEditOutlineIcon/> 
+                </IconButton>
+              </Tooltip>
+              <ResponsiveDialog
                 uniqId={id} 
                 icon={<DeleteIcon sx={{ color: "red" }}/>} 
                 handleDeleteItem={handleDeleteItem}
-            />
-          </button>
+              />
+            </div>
+          </div>
         ))}
       </div>
 
@@ -77,12 +93,10 @@ function CinemaAdmin() {
 
       {!!RoomID &&
       <CreateRoom  
-        RoomID={RoomID}
         SetMessage={SetSuccessCode}
         NewData={getRoomNameAndId(RoomID)}
         onClose={() => {SetRoomID(NaN)}}
       />}
-
 
       {!!success && <AlertResponseDialog
         successMessage={success} 

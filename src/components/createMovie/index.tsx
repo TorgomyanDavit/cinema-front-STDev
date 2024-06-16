@@ -11,18 +11,16 @@ import { useCreateMovieMutation, useEditeMovieMutation } from '../../services/mo
 import Input from '../OriginalInput';
 import PhotoUploader from '../PhotoUpload';
 import BasicDatePicker from '../dataPicker/dataTime';
-import dayjs from 'dayjs';
 import BasicTimePicker from '../dataPicker/timer';
 
 
 export const createPostScheme = yup.object().shape({
-    title:yup.string().min(2).required(),
-    show_datetime:yup.string().min(2).required()
-    // playlistImg:yup.string().required(),
+    title:yup.string().required(),
+    show_datetime:yup.string().required(),
+    duration:yup.string().required()
 });
 
 export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
-
     const { register,handleSubmit, setValue, formState: { errors } } = useForm<any>({
         resolver:yupResolver(createPostScheme)
     });
@@ -34,9 +32,7 @@ export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
     const [createMovie,{isLoading:loadingCreate}] = useCreateMovieMutation()
     const [editeMovie,{isLoading:loadingEdit}] = useEditeMovieMutation()
 
-
     const onSubmit: SubmitHandler<any> = async (data:any) => {
-        debugger
         const {title,show_datetime,duration} = data
         formData.append("title", title);
         formData.append("show_datetime", show_datetime);
@@ -66,10 +62,6 @@ export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
         }
     }
 
-    const onError: SubmitHandler<any> = async (error) => {
-        console.log(error)
-    }
-
     useEffect(() => {
         if(NewData) {
           setValue("title",NewData?.title);
@@ -78,10 +70,10 @@ export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
         } 
     },[NewData])
 
-
+    console.log(errors,"errors");
     console.log(NewData,"NewData");
     return (
-        <form className='createPopUp_container_img' onSubmit={handleSubmit(onSubmit,onError)}>
+        <form className='createPopUp_container_img' onSubmit={handleSubmit(onSubmit)}>
             <ClickToOutsideClose onClickOutside={() => "onClose()"}>
                 <div className='centerPopUp'>
                     <div className='popUptopSide'>
@@ -98,21 +90,17 @@ export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
                             />
                         </div>
                         <BasicDatePicker
-                            value={dayjs()} 
                             onChange={(newValue) => {
-                                setValue('show_datetime',  dayjs(newValue)?.format('YYYY-MM-DD HH:mm'))
+                                setValue('show_datetime',  newValue?.format('YYYY-MM-DD HH:mm'))
                             }} 
-                            register={register} 
-                            registerName="show_datetime"
+                            error={errors?.show_datetime}
                         />
 
                         <BasicTimePicker
-                            value={dayjs()} 
                             onChange={(newValue) => {
-                                setValue('duration', dayjs(newValue)?.format('HH:mm:ss'))
+                                setValue('duration', newValue?.format('HH:mm:ss'))
                             }} 
-                            register={register} 
-                            registerName="duration"
+                            error={errors?.duration}
                         />
                         
                         <PhotoUploader
@@ -127,7 +115,7 @@ export default function CreateMovie({onClose,NewData,SetMessage,RoomID}:any) {
                         <Button sx={{width:"300px",textAlign:"right"}} type='submit' variant="outlined" onClick={onClose}>Close</Button>
                         <Button sx={{width:"300px",textAlign:"right"}} type='submit' variant="contained" endIcon={
                             loadingEdit || loadingCreate ? <CircularProgress size={18} style={{ color: 'black' }}/> : <SendIcon />
-                        }>{NewData ? "Change" : "Add"} </Button>
+                        }>{NewData ? "Change movie" : "Add movie"} </Button>
                     </div>
                 </div>
             </ClickToOutsideClose>

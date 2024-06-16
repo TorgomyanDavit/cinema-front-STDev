@@ -24,7 +24,7 @@ const ClickToOutsideClose: React.FC<IProps> = ({ children, className, onClickOut
     };
   }, [onClickOutside]);
 
-  return <div style={{display:"flex",justifyContent:"space-between",height: "83%"}} className={className} ref={container}>{children}</div>;
+  return <div style={{display:"flex",justifyContent:"space-between"}} className={className} ref={container}>{children}</div>;
 };
 
 export default ClickToOutsideClose;
